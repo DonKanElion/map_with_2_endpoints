@@ -1,16 +1,23 @@
+import { Container } from './Container/Container';
+// import { TestMap } from "./TestMap/TestMap";
+
 export const App = () => {
   return (
     <div
       style={{
-        height: '100vh',
+        // height: '100vh',
+        marginTop: '40px',
+        padding: '0 30px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
+        flexDirection: 'column',
+        fontSize: 28,
+        color: '#010101',
       }}
     >
-      React homework template
+      <Container style={{ display: 'block' }}></Container>
+      {/* <TestMap></TestMap> */}
     </div>
   );
 };
