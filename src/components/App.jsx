@@ -1,5 +1,5 @@
-import { Container } from './Container/Container';
-// import { TestMap } from "./TestMap/TestMap";
+// import { Container } from './Container/Container';
+import MapBox from './MapBox/MapBox';
 
 export const App = () => {
   return (
@@ -16,8 +16,8 @@ export const App = () => {
         color: '#010101',
       }}
     >
-      <Container style={{ display: 'block' }}></Container>
-      {/* <TestMap></TestMap> */}
+      <MapBox />
+      {/* <Container style={{ display: 'block' }}></Container> */}
     </div>
   );
 };
