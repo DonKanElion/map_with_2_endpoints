@@ -5,7 +5,7 @@ import './Map.css';
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg';
 
-export const MapBox = () => {
+export const MapBoxTest = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
@@ -33,8 +33,8 @@ export const MapBox = () => {
 
   return (
     <div
-      // styles={{ position: 'absolute', top: '0', bottom: '0', width: '100%' }}
-      // id="map"
+    // styles={{ position: 'absolute', top: '0', bottom: '0', width: '100%' }}
+    // id="map"
     >
       <div>
         <div className="sidebar">

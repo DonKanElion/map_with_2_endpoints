@@ -11,18 +11,30 @@ import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg';
 
-const Map = () => {
+const MapBox = ({ changeDistance }) => {
   const mapContainerRef = useRef(null);
 
-  const [lng, setLng] = useState(5);
-  const [lat, setLat] = useState(34);
-  const [zoom, setZoom] = useState(1.5);
+  const [lng, setLng] = useState(30.5241);
+  const [lat, setLat] = useState(50.45);
+  const [zoom, setZoom] = useState(9);
+  const [newDistance, setNewDistance] = useState('');
 
   const distance = document.getElementsByClassName(
     'mapbox-directions-route-summary'
   );
 
-  console.log('distance:', distance[0]?.children[1]?.innerText);
+  useEffect(() => {
+    if (
+      newDistance !== '' ||
+      newDistance !== distance[0]?.children[2]?.innerText
+    )
+      changeDistance(newDistance);
+
+    return;
+  }, [newDistance]);
+
+  if (distance[0]?.children[2]?.innerText !== newDistance)
+    setNewDistance(distance[0]?.children[2]?.innerText);
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -50,7 +62,7 @@ const Map = () => {
           enableHighAccuracy: true,
         },
         trackUserLocation: true,
-        showUserHeading: true,
+        showUserHeading: false,
       })
     );
 
@@ -78,14 +90,18 @@ const Map = () => {
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
       profile: 'mapbox/driving',
+      alternatives: true,
       //   interactive: false,
       //   controls: false,
     });
+
     map.addControl(directions, 'top-left');
 
-
-
     console.log('map.on: ', map.on());
+
+    // const distance = new mapboxgl.MercatorCoordinate({
+    //   // toLngLat()
+    // });
 
     // Clean up on unmount
     return () => map.remove();
@@ -93,14 +109,14 @@ const Map = () => {
 
   return (
     <div>
-      <div className="sidebarStyle">
+      {/* <div className="sidebarStyle">
         <div>
-          Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+          TEST Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
-      </div>
+      </div> */}
       <div className="map-container" ref={mapContainerRef} />
     </div>
   );
 };
 
-export default Map;
+export default MapBox;

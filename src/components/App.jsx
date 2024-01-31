@@ -1,7 +1,14 @@
-// import { Container } from './Container/Container';
+import { useState } from 'react';
+import { Container } from './Container/Container';
 import MapBox from './MapBox/MapBox';
 
 export const App = () => {
+  const [distance, setDistance] = useState('');
+
+  function changeDistance(data) {
+    setDistance(data);
+  }
+
   return (
     <div
       style={{
@@ -16,8 +23,9 @@ export const App = () => {
         color: '#010101',
       }}
     >
-      <MapBox />
-      {/* <Container style={{ display: 'block' }}></Container> */}
+      <Container style={{ display: 'block' }} distance={distance}>
+        <MapBox changeDistance={changeDistance} />
+      </Container>
     </div>
   );
 };

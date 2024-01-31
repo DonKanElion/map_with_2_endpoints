@@ -1,6 +1,16 @@
-import { TestMap } from 'components/TestMap/TestMap';
+// import { TestMap } from 'components/TestMap/TestMap';
 
-export const Container = () => {
+import { useEffect } from 'react';
+
+export const Container = ({ distance = '0km', children }) => {
+  function setDistanceInLocalStorege(data) {
+    localStorage.setItem('distance', data);
+  }
+
+  useEffect(() => {
+    setDistanceInLocalStorege(distance);
+  }, [distance]);
+
   return (
     <>
       <div style={{ display: 'block' }}>
@@ -19,11 +29,11 @@ export const Container = () => {
       </div>
 
       <div>
-        <p>Distance: 100 km</p>
+        <p>Distance: {distance}</p>
         <button>Save distance</button>
       </div>
-
-      <TestMap></TestMap>
+      {children}
+      {/* <TestMap></TestMap> */}
     </>
   );
 };
