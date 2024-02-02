@@ -17,6 +17,7 @@ const MapBox = ({ changeDistance }) => {
   const [lng, setLng] = useState(30.5241);
   const [lat, setLat] = useState(50.45);
   const [zoom, setZoom] = useState(9);
+
   const [newDistance, setNewDistance] = useState('');
 
   const distance = document.getElementsByClassName(
@@ -44,6 +45,7 @@ const MapBox = ({ changeDistance }) => {
       center: [lng, lat],
       zoom: zoom,
       //   attributionControl: true,
+      language: 'uk-UA',
     });
 
     // Add navigation control (the +/- zoom buttons)
@@ -93,15 +95,56 @@ const MapBox = ({ changeDistance }) => {
       alternatives: true,
       //   interactive: false,
       //   controls: false,
+      geometries: false,
+      controls: { instructions: true },
+      flyTo: false,
+      interactive: false,
+      language: 'uk-UA',
     });
 
     map.addControl(directions, 'top-left');
 
-    console.log('map.on: ', map.on());
+    // ✅ SET coordinates A and B
+    map.on('load', function () {
+      const start = [30.524153, 50.450024];
+      //   const startT = 'Дніпро';
+      const end = [30.732607, 46.484282];
+      //   const endT = 'Львів';
 
-    // const distance = new mapboxgl.MercatorCoordinate({
-    //   // toLngLat()
-    // });
+      directions.setOrigin(start); // can be address in form setOrigin("12, Elm Street, NY")
+      directions.setDestination(end); // can be address
+    });
+
+    // ✅ GET coordinates
+    map.on('load', function () {
+      const getOrigin = directions.getOrigin();
+      const getDestination = directions.getDestination();
+
+      console.log('getOrigin A: ', getOrigin.geometry.coordinates);
+      console.log('getDestination B: ', getDestination.geometry.coordinates);
+
+      const getWaypoints = directions.getWaypoints();
+
+      console.log('waypoint: ', getWaypoints);
+    });
+
+    map.on('load', function () {
+      const getWaypoints = directions.getWaypoints();
+
+      console.log('waypoint: ', getWaypoints);
+    });
+
+    if (map) {
+      map.on('click', e => {
+        console.log('{onclick} focus:');
+      });
+    }
+    return () => {
+      //unsubcribe here.
+      map.off('click', e => {
+        console.log('clickkkkkk');
+      });
+    };
 
     // Clean up on unmount
     return () => map.remove();
