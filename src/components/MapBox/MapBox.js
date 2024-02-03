@@ -111,9 +111,12 @@ const MapBox = ({ coordinates, changeDistance }) => {
   //     changeDistance(distance);
   //   }, [distance]);
 
-  const changeDistanceCallback = distance => {
-    changeDistance(distance);
-  };
+  const changeDistanceCallback = useCallback(
+    distance => {
+      changeDistance(distance);
+    },
+    [distance]
+  );
 
   useEffect(() => changeDistanceCallback(distance), [distance]);
 
