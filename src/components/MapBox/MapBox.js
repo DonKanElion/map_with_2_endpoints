@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import mapboxgl from 'mapbox-gl';
 import './Map.css';
@@ -107,18 +107,9 @@ const MapBox = ({ coordinates, changeDistance }) => {
     return () => map.remove();
   }, [coordinates, distance]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  //   useEffect(() => {
-  //     changeDistance(distance);
-  //   }, [distance]);
-
-  const changeDistanceCallback = useCallback(
-    distance => {
-      changeDistance(distance);
-    },
-    [distance]
-  );
-
-  useEffect(() => changeDistanceCallback(distance), [distance]);
+  useEffect(() => {
+    changeDistance(distance);
+  }, [distance]);
 
   console.log('mapOrigin: ', mapOrigin);
   console.log('mapDestination ', mapDestination);
