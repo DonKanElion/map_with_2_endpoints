@@ -3,10 +3,15 @@ import { Container } from './Container/Container';
 import MapBox from './MapBox/MapBox';
 
 export const App = () => {
-  const [distance, setDistance] = useState('');
+  const [newCoordinates, setNewCoordinates] = useState({});
+  const [distance, setDistance] = useState(null);
 
   function changeDistance(data) {
     setDistance(data);
+  }
+
+  function addCoordinates(data) {
+    setNewCoordinates(data);
   }
 
   return (
@@ -19,12 +24,16 @@ export const App = () => {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        fontSize: 28,
+        fontSize: 24,
         color: '#010101',
       }}
     >
-      <Container style={{ display: 'block' }} distance={distance}>
-        <MapBox changeDistance={changeDistance} />
+      <Container
+        style={{ display: 'block' }}
+        distance={distance}
+        addCoordinates={addCoordinates}
+      >
+        <MapBox changeDistance={changeDistance} coordinates={newCoordinates} />
       </Container>
     </div>
   );

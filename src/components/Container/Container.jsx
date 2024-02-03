@@ -1,36 +1,62 @@
 // import { TestMap } from 'components/TestMap/TestMap';
 
-import { useEffect } from 'react';
+import { useState } from 'react';
 
-export const Container = ({ distance = '0km', children }) => {
+export const Container = ({ distance, addCoordinates, children }) => {
+  const [route, setRoute] = useState([]);
+
   function setDistanceInLocalStorege(data) {
-    localStorage.setItem('distance', data);
+    localStorage.setItem('route', data);
   }
 
-  useEffect(() => {
-    setDistanceInLocalStorege(distance);
-  }, [distance]);
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    const coordinates = {
+      origin: form.elements.origin.value,
+      destination: form.elements.destination.value,
+    };
+    setRoute(coordinates);
+    addCoordinates(coordinates);
+    form.reset();
+  };
+
+  const handleClick = () => {
+    console.log('Distance: ', distance?.toFixed(5));
+    console.log('Route: ', { ...route, distance: distance });
+    const saveLocalStorage = JSON.stringify({ ...route, distance: distance });
+    setDistanceInLocalStorege(saveLocalStorage);
+  };
 
   return (
     <>
       <div style={{ display: 'block' }}>
-        <form action="" style={{ display: 'flex', flexDirection: 'column' }}>
+        <form
+          autoComplete="off"
+          style={{ display: 'flex', flexDirection: 'column' }}
+          onSubmit={handleSubmit}
+        >
           <label>
             Origin
-            <input type="text" />
+            <input type="text" name="origin" />
           </label>
           <label>
             Destination
-            <input type="text" />
+            <input type="text" name="destination" />
           </label>
 
-          <button>Submit</button>
+          <button type="submit">Submit</button>
         </form>
       </div>
 
       <div>
-        <p>Distance: {distance}</p>
-        <button>Save distance</button>
+        <p>
+          Distance: {distance} {distance ? 'km' : ''}
+        </p>
+        <button type="button" onClick={handleClick}>
+          Save distance
+        </button>
       </div>
       {children}
       {/* <TestMap></TestMap> */}
