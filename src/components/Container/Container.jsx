@@ -1,5 +1,3 @@
-// import { TestMap } from 'components/TestMap/TestMap';
-
 import { useState } from 'react';
 
 export const Container = ({ distance, addCoordinates, children }) => {
@@ -59,7 +57,6 @@ export const Container = ({ distance, addCoordinates, children }) => {
         </button>
       </div>
       {children}
-      {/* <TestMap></TestMap> */}
     </>
   );
 };
