@@ -5,6 +5,22 @@ import MapBox from './MapBox/MapBox';
 export const App = () => {
   const [newCoordinates, setNewCoordinates] = useState({});
   const [distance, setDistance] = useState(null);
+  const [onOpenMap, setOnOpenMap] = useState(false);
+
+  const [address, setAddress] = useState({
+    streetAndNumber: '',
+    place: '',
+    region: '',
+    postcode: '',
+    country: '',
+    latitude: '',
+    longitude: '',
+  });
+
+  const updateCoordinates = (latitude, longitude) => {
+    console.log('updateCoordinates: ', latitude, longitude);
+    setAddress({ ...address, latitude, longitude });
+  };
 
   function changeDistance(data) {
     setDistance(data);
@@ -32,8 +48,19 @@ export const App = () => {
         style={{ display: 'block' }}
         distance={distance}
         addCoordinates={addCoordinates}
+        // onSubmit={handleFormSubmit}
+        address={address}
+        setAddress={setAddress}
       >
-        <MapBox changeDistance={changeDistance} coordinates={newCoordinates} />
+        {onOpenMap ? (
+          <MapBox
+            changeDistance={changeDistance}
+            coordinates={newCoordinates}
+            updateCoordinates={updateCoordinates}
+          />
+        ) : null}
+
+        <button onClick={() => setOnOpenMap(!onOpenMap)}>Open map</button>
       </Container>
     </div>
   );

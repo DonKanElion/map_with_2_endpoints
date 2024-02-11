@@ -8,7 +8,8 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
 
 mapboxgl.accessToken =
-  'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg';
+  'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg';
+// 'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg'; // Palienko token
 
 const MapBox = ({ coordinates, changeDistance }) => {
   const mapContainerRef = useRef(null);
@@ -25,11 +26,12 @@ const MapBox = ({ coordinates, changeDistance }) => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: 'mapbox://styles/mapbox/streets-v12',
       center: [lng, lat],
       zoom: zoom,
       //   attributionControl: true,
       language: 'uk-UA',
+      geometries: 'polyline',
     });
 
     // Add navigation control (the +/- zoom buttons)
@@ -45,11 +47,12 @@ const MapBox = ({ coordinates, changeDistance }) => {
     const directions = new MapboxDirections({
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
-      profile: 'mapbox/driving',
+      profile: 'mapbox/walking',
       alternatives: true,
       language: 'uk-UA',
       interactive: true,
       flyTo: true,
+      autocomplete: true,
       // controls: false,
       //   geometries: false,
       //   controls: { instructions: true },
