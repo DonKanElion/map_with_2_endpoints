@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
-import { getPlaces } from 'api/fetchStreet';
+// import { getPlaces } from 'api/fetchStreet';
+import { getAddress } from 'api/fetchAddress';
 import AutoCompleteInput from 'components/AutoCompleteInput/AutoCompleteInput';
+import AutoCompleteInput2 from 'components/AutoCompleteInput/AutoCompleteInput2';
 
 export const Container = ({
   address,
@@ -46,7 +48,8 @@ export const Container = ({
       return;
     }
 
-    getPlaces(address)
+    // getPlaces(address)
+    getAddress(address)
       .then(data => {
         console.log('DATA: ', data);
 
@@ -102,6 +105,12 @@ export const Container = ({
     <>
       <div style={{ display: 'block' }}>
         <AutoCompleteInput
+          handleManualInputChange={handleManualInputChange}
+          setAddress={setAddress}
+        />
+
+        <p>TESTING 2</p>
+        <AutoCompleteInput2
           handleManualInputChange={handleManualInputChange}
           setAddress={setAddress}
         />
