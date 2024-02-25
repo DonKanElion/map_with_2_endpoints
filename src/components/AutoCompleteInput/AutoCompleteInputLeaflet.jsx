@@ -1,60 +1,64 @@
 import { useState } from 'react';
-// import { getPlaces } from 'api/fetchStreet';
 import { getAddress } from 'api/fetchAddress';
 
 import css from './AutoCompleteInput.module.css';
 
-export default function AutoCompleteInput2({
-  handleManualInputChange,
-  setAddress,
-  streetAndNumber,
+export default function AutoCompleteInputLeaflet({
+  name,
+  title,
+  placeholder,
+  addEndpoint,
 }) {
   const [suggestions, setSuggestions] = useState([]);
+  const [value, setValue] = useState('');
 
   const handleChange = event => {
-    handleManualInputChange(event, 'streetAndNumber');
+    setValue(event.target.value);
     handleInputChange(event.target.value);
   };
 
   const handleInputChange = async query => {
     const suggesions = await getAddress(query);
-    console.log('RESP sugg: ', suggesions);
     setSuggestions(suggesions);
   };
 
   const handleSuggestionClick = suggestion => {
-    const streetAndNumber = suggestion.address.split(',')[0];
-    const latitude = suggestion.location.x;
-    const longitude = suggestion.location.y;
+    const streetAndNumber = suggestion.address;
+
+    const longitude = suggestion.location.x;
+    const latitude = suggestion.location.y;
     const place = suggestion.attributes.City;
-    const region = suggestion.attributes.region;
-    const postcode = suggestion.attributes.postal;
+    const subregion = suggestion.attributes.Subregion;
+    const region = suggestion.attributes.Region;
+    const postcode = suggestion.attributes.Postal;
     const country = suggestion.attributes.CntryName;
 
     const address = {
       streetAndNumber,
       place,
+      subregion,
       region,
       postcode,
       country,
       latitude,
       longitude,
     };
-    console.log(address.longitude, address.latitude);
 
-    setAddress(address);
+    setValue(suggestion.address);
+    addEndpoint({ address: address, name: name });
     setSuggestions([]);
   };
 
   return (
-    <div>
+    <label>
+      {title}
       <div className={css.autoCompleteInputContainer}>
-        <p>Тестовий</p>
         <input
-          id="address"
+          className={css.input}
           type="text"
-          placeholder="Address"
-          value={streetAndNumber}
+          name={name}
+          placeholder={placeholder}
+          value={value}
           onChange={handleChange}
         />
         <ul className={css.addressSuggestions}>
@@ -69,6 +73,6 @@ export default function AutoCompleteInput2({
           ))}
         </ul>
       </div>
-    </div>
+    </label>
   );
 }

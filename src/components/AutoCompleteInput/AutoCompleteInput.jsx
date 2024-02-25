@@ -3,7 +3,7 @@ import { getPlaces } from 'api/fetchStreet';
 
 import css from './AutoCompleteInput.module.css';
 
-export default function AutoCompleteInput({
+export default function AutoCompleteInputMapBox({
   handleManualInputChange,
   setAddress,
   streetAndNumber,
@@ -22,8 +22,8 @@ export default function AutoCompleteInput({
 
   const handleSuggestionClick = suggestion => {
     const streetAndNumber = suggestion.place_name.split(',')[0];
-    const latitude = suggestion.center[1];
     const longitude = suggestion.center[0];
+    const latitude = suggestion.center[1];
 
     const address = {
       streetAndNumber,
@@ -41,7 +41,7 @@ export default function AutoCompleteInput({
       address[identifier] = element.text;
     });
 
-    console.log(address.longitude, address.latitude);
+    console.log('coordinates: ', address.longitude, address.latitude);
 
     setAddress(address);
     setSuggestions([]);
@@ -50,6 +50,7 @@ export default function AutoCompleteInput({
   return (
     <div>
       <div className={css.autoCompleteInputContainer}>
+        <p>mapBox</p>
         <input
           id="address"
           type="text"

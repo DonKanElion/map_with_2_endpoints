@@ -8,28 +8,22 @@ const accessToken =
 // 'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg'; // Palienko token
 
 export const getPlaces = debounce(async query => {
-  console.log('query: ', query);
   try {
     const response = await axios.get(
       `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json`,
       {
         params: {
           access_token: accessToken,
-          // limit: 3,
           country: 'ua',
           language: 'uk',
           proximity: '-73.990593,2C40.74012',
           types: 'address',
           autocomplete: 'true',
-          // q: query,
-          // gl: 'ua',
-          // hl: 'uk',
           place_type: 'address',
           geometries: 'polyline',
         },
       }
     );
-    // console.log('response DATA: ', response);
     console.log('response: FEATURES', response?.data?.features);
     return response.data.features;
   } catch (error) {

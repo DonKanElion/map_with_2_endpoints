@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-// import { getPlaces } from 'api/fetchStreet';
+// import { getPlaces } from 'api/fetchStreet'; //
 import { getAddress } from 'api/fetchAddress';
 import AutoCompleteInput from 'components/AutoCompleteInput/AutoCompleteInput';
-import AutoCompleteInput2 from 'components/AutoCompleteInput/AutoCompleteInput2';
+import AutoCompleteInputLeaflet from 'components/AutoCompleteInput/AutoCompleteInputLeaflet';
 
 export const Container = ({
   address,
@@ -109,8 +109,7 @@ export const Container = ({
           setAddress={setAddress}
         />
 
-        <p>TESTING 2</p>
-        <AutoCompleteInput2
+        <AutoCompleteInputLeaflet
           handleManualInputChange={handleManualInputChange}
           setAddress={setAddress}
         />
@@ -138,6 +137,28 @@ export const Container = ({
             <ul class="country-list"></ul>
           </label>
           <label>
+            Адрес 1
+            <input
+              type="text"
+              name="endpoint1"
+              value={endpoint1}
+              onChange={handleChange}
+            />
+            <ul class="country-list"></ul>
+          </label>
+          <AutoCompleteInputLeaflet
+            type="text"
+            name="endpoint1"
+            placeholder="Ввведіть адресу 1"
+            // value={endpoint1}
+            // onChange={handleChange}
+            // handleManualInputChange={handleManualInputChange}
+            setAddress={setAddress}
+          />
+
+
+
+          <label>
             Адрес 2
             <input
               type="text"
@@ -147,28 +168,6 @@ export const Container = ({
             />
             <ul class="country-list"></ul>
           </label>
-          <button type="submit">Submit</button>
-        </form>
-
-        <form
-          autoComplete="off"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            outline: '2px solid teal',
-            padding: '10px',
-          }}
-          onSubmit={handleSubmit}
-        >
-          <label>
-            Origin
-            <input type="text" name="origin" />
-          </label>
-          <label>
-            Destination
-            <input type="text" name="destination" />
-          </label>
-
           <button type="submit">Submit</button>
         </form>
       </div>

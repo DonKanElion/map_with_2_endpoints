@@ -28,3 +28,7 @@
   cursor: pointer;
 }
 
+.input {
+  min-width: 360px;
+  height: 26px;
+}

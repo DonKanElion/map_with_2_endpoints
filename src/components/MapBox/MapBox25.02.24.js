@@ -11,8 +11,6 @@ mapboxgl.accessToken =
   'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg';
 // 'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg'; // Palienko token
 
-// pk.eyJ1Ijoic2tvcmFzYXVydXMiLCJhIjoiY2s5dmRjbnZpMDVlZzNlcjN3MHowYzVrbSJ9.AcSdcVS034Hhl0RhBHoC2A
-
 const MapBox = ({ coordinates, changeDistance }) => {
   const mapContainerRef = useRef(null);
 
@@ -33,7 +31,7 @@ const MapBox = ({ coordinates, changeDistance }) => {
       zoom: zoom,
       //   attributionControl: true,
       language: 'uk-UA',
-      geometries: 'polyline6',
+      geometries: 'polyline',
     });
 
     // Add navigation control (the +/- zoom buttons)
@@ -50,13 +48,12 @@ const MapBox = ({ coordinates, changeDistance }) => {
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
       profile: 'mapbox/walking',
-      alternatives: false,
+      alternatives: true,
       language: 'uk-UA',
-      controls: false,
-      interactive: false,
-      flyTo: false,
-      // autocomplete: true,
-
+      interactive: true,
+      flyTo: true,
+      autocomplete: true,
+      // controls: false,
       //   geometries: false,
       //   controls: { instructions: true },
     });
@@ -66,14 +63,17 @@ const MapBox = ({ coordinates, changeDistance }) => {
     // ✅ SET coordinates
     map.on('load', function () {
       const { origin, destination } = coordinates;
+      console.log('is Coordinates: ', Object.keys(coordinates).length !== 0);
 
       if (Object.keys(coordinates).length !== 0) {
+        console.log('if +++ Coordinates: ', coordinates);
         directions.setOrigin(origin);
         directions.setDestination(destination);
         setMapOrigin(origin);
         setMapDestination(destination);
         return;
       }
+      console.log('if --- Coordinates:  ', coordinates);
     });
 
     // ✅ GET coordinates
@@ -102,7 +102,8 @@ const MapBox = ({ coordinates, changeDistance }) => {
     directions.on('route', e => {
       // routes is an array of route objects as documented here:
       // Each route object has a distance property
-      setDistance(e.route[0].distance);
+      const data = e.route[0].distance / 1000;
+      setDistance(data);
     });
 
     // Clean up on unmount
@@ -113,11 +114,16 @@ const MapBox = ({ coordinates, changeDistance }) => {
     changeDistance(distance);
   }, [distance]);
 
+  console.log('mapOrigin: ', mapOrigin);
+  console.log('mapDestination ', mapDestination);
+  console.log('Distance, km: ', distance);
+
   return (
     <div>
       <div className="sidebarStyle">
         <div>
-          Distance: {distance ? distance / 1000 : ''} {distance ? 'km' : ''}
+          A: {mapOrigin} | B: {mapDestination} | Distance:{' '}
+          {distance ? distance : ''} {distance ? 'km' : ''}
         </div>
       </div>
       <div className="map-container" ref={mapContainerRef} />

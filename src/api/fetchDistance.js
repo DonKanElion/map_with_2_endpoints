@@ -1,42 +1,37 @@
+import axios from 'axios';
 
+const mode = 'walking'; //driving
+const accessToken =
+  'pk.eyJ1Ijoic2tvcmFzYXVydXMiLCJhIjoiY2s5dmRjbnZpMDVlZzNlcjN3MHowYzVrbSJ9.AcSdcVS034Hhl0RhBHoC2A';
+// Palienko token
 
+// 'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg';
 
-// const profile = 'mapbox/driving';
-// const coordinates = {longitude},{latitude}
+// pk.eyJ1Ijoic2tvcmFzYXVydXMiLCJhIjoiY2s5dmRjbnZpMDVlZzNlcjN3MHowYzVrbSJ9.AcSdcVS034Hhl0RhBHoC2A
 
-// const coordA = {lat : 33.968123, long: -118.419454}
+export const getDistance = async data => {
+  const { origin, destination } = data;
 
-// const coordB = {{lat : 33.997223, long: -117.929145}}
+  try {
+    const response = await axios.get(
+      `https://api.mapbox.com/directions/v5/mapbox/${mode}/${origin[0]},${origin[1]};${destination[0]},${destination[1]}?`,
+      {
+        params: {
+          annotations: 'distance',
+          alternatives: true,
+          continue_straight: true,
+          geometries: 'polyline6',
+          overview: 'full',
+          access_token: accessToken,
+        },
+      }
+    );
 
-// const accessToken =
-//   'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg';
-
-
-  https://api.mapbox.com/directions/v5/mapbox/driving/-74.0624%2C40.709263%3B-73.946933%2C40.702708?alternatives=true&annotations=distance&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg
-
-
-https://api.mapbox.com/directions/v5/{profile}/{coordinates} 
-
-
-https://api.mapbox.com/directions/v5/mapbox/driving/30.5241361%2C50.4500336%3B30.739278%2C46.48732.json?geometries=polyline&alternatives=true&steps=true&overview=full&language=uk-UA&access_token=pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg
-
-
-
-
-
-
-https://api.mapbox.com/directions-matrix/v1/mapbox/driving/-118.419454,33.968123;-117.929145,33.997223?approaches=curb;curb;curb&access_token=pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg
-
-
-// const distance = await mapbox.getDistance(coordA, coordB)
-
-// console.log(distance)
-
-
-https://api.mapbox.com/directions-matrix/v1/mapbox/mapbox/driving/-122.418563,37.751659;-122.422969,37.75529;-122.426904,37.759617?sources=1&annotations=distance,duration&access_token=pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg
-
-
-https://api.mapbox.com/directions/v5/mapbox/driving/-74.0624%2C40.709263%3B-73.946933%2C40.702708?alternatives=true&annotations=distance&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg
-
-
-https://api.mapbox.com/directions/v5/mapbox/driving/-74.0624%2C40.709263%3B-73.946933%2C40.702708?alternatives=true&annotations=distance&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg
+    if (response.data.code === 'Ok') {
+      return response.data.routes[0].distance;
+    }
+    console.error('ERROR: ', response.data.code);
+  } catch (error) {
+    console.error('There was an error while fetching places:', error);
+  }
+};

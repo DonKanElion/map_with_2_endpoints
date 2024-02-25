@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { Container } from './Container/Container';
+import { createPortal } from 'react-dom';
+
+// import { Container } from './Container/Container'; // mapBox search
+import { ContainerLeaflet } from './Container/ContainerLeaflet';
 import MapBox from './MapBox/MapBox';
+import { ModalWindow } from './ModalWindow/ModalWindow';
 
 export const App = () => {
   const [newCoordinates, setNewCoordinates] = useState({});
@@ -10,6 +14,7 @@ export const App = () => {
   const [address, setAddress] = useState({
     streetAndNumber: '',
     place: '',
+    subregion: '',
     region: '',
     postcode: '',
     country: '',
@@ -17,13 +22,14 @@ export const App = () => {
     longitude: '',
   });
 
-  const updateCoordinates = (latitude, longitude) => {
-    console.log('updateCoordinates: ', latitude, longitude);
-    setAddress({ ...address, latitude, longitude });
-  };
+  // const updateCoordinates = (latitude, longitude) => {
+  //   console.log('updateCoordinates: ', latitude, longitude);
+  //   setAddress({ ...address, latitude, longitude });
+  // };
 
   function changeDistance(data) {
-    setDistance(data);
+    const metersToKilometersConversion = data / 1000;
+    setDistance(metersToKilometersConversion);
   }
 
   function addCoordinates(data) {
@@ -33,7 +39,6 @@ export const App = () => {
   return (
     <div
       style={{
-        // height: '100vh',
         marginTop: '40px',
         padding: '0 30px',
         display: 'flex',
@@ -44,7 +49,48 @@ export const App = () => {
         color: '#010101',
       }}
     >
-      <Container
+      <ContainerLeaflet
+        style={{ display: 'block' }}
+        distance={distance}
+        addCoordinates={addCoordinates}
+        // onSubmit={handleFormSubmit}
+        changeDistance={changeDistance}
+        address={address}
+        setAddress={setAddress}
+      >
+        {/* {onOpenMap ? (
+          <MapBox
+            changeDistance={changeDistance}
+            coordinates={newCoordinates}
+            // updateCoordinates={updateCoordinates}
+          />
+        ) : null}
+
+        <button onClick={() => setOnOpenMap(!onOpenMap)}>Open map</button> */}
+      </ContainerLeaflet>
+
+      <button type="button" onClick={() => setOnOpenMap(!onOpenMap)}>
+        Open MODAL
+      </button>
+
+      {onOpenMap &&
+        createPortal(
+          <ModalWindow>
+            <h1>Hello world!!!</h1>
+            <button type="button" onClick={() => setOnOpenMap(!onOpenMap)}>
+              Close
+            </button>
+
+            <MapBox
+              changeDistance={changeDistance}
+              coordinates={newCoordinates}
+              // updateCoordinates={updateCoordinates}
+            />
+          </ModalWindow>,
+          document.body
+        )}
+
+      {/* <Container
         style={{ display: 'block' }}
         distance={distance}
         addCoordinates={addCoordinates}
@@ -61,7 +107,7 @@ export const App = () => {
         ) : null}
 
         <button onClick={() => setOnOpenMap(!onOpenMap)}>Open map</button>
-      </Container>
+      </Container> */}
     </div>
   );
 };
