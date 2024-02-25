@@ -1,11 +1,10 @@
 .autoCompleteInputContainer {
   position: relative;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 .addressSuggestions {
   position: absolute;
-  /* top: 1.75em; */
   background-color: white;
   border: 1px solid black;
   overflow: hidden;
@@ -13,6 +12,8 @@
   color: black;
   z-index: 999;
   padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 .addressSuggestions_item {

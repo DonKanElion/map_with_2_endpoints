@@ -11,21 +11,21 @@ export const ContainerLeaflet = ({
 }) => {
   const [route, setRoute] = useState([]);
   const [origin, setOrigin] = useState([]);
-  const [destination, setDestination] = useState({});
+  const [destination, setDestination] = useState([]);
 
-  function setDistanceInLocalStorage(data) {
+  const setDistanceInLocalStorage = data => {
     localStorage.setItem('route', data);
-  }
+  };
 
   const addEndpoint = data => {
     const { name, address } = data;
 
     switch (name) {
       case 'origin':
-        setOrigin([address.longitude, address.latitude]);
+        setOrigin(address);
         return;
       case 'destination':
-        setDestination([address.longitude, address.latitude]);
+        setDestination(address);
         return;
       default:
         throw new Error(`Unsupported type of ${name}`);
@@ -33,8 +33,19 @@ export const ContainerLeaflet = ({
   };
 
   const handleClick = () => {
+    if (!distance) return alert('Enter endpoints');
+
     console.log('Distance: ', distance?.toFixed(5));
-    console.log('Route: ', { ...route, distance: distance });
+    console.log('Route: ', { ...route, distance });
+
+    const fullRoute = {
+      origin,
+      destination,
+      distance,
+    };
+
+    console.log('Full Route: ', fullRoute);
+
     const saveLocalStorage = JSON.stringify({ ...route, distance: distance });
     setDistanceInLocalStorage(saveLocalStorage);
   };
@@ -42,9 +53,11 @@ export const ContainerLeaflet = ({
   const handleSubmit = e => {
     e.preventDefault();
 
+    if (!origin && !destination) return alert('Enter the address');
+
     const coordinates = {
-      origin,
-      destination,
+      origin: [origin.longitude, origin.latitude],
+      destination: [destination.longitude, destination.latitude],
     };
     setRoute(coordinates);
     addCoordinates(coordinates);
@@ -80,15 +93,24 @@ export const ContainerLeaflet = ({
             placeholder="Address #2"
             addEndpoint={addEndpoint}
           />
-          <button type="submit">To count</button>
+          <button type="submit">Count distance</button>
         </form>
       </div>
 
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <p>
           Distance: {distance} {distance ? 'km' : ''}
         </p>
-        <button type="button" onClick={handleClick}>
+        <button
+          type="button"
+          onClick={handleClick}
+          style={{ marginLeft: '20px', height: '30px' }}
+        >
           Save distance
         </button>
       </div>

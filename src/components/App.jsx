@@ -27,14 +27,14 @@ export const App = () => {
   //   setAddress({ ...address, latitude, longitude });
   // };
 
-  function changeDistance(data) {
+  const changeDistance = data => {
     const metersToKilometersConversion = data / 1000;
     setDistance(metersToKilometersConversion);
-  }
+  };
 
-  function addCoordinates(data) {
+  const addCoordinates = data => {
     setNewCoordinates(data);
-  }
+  };
 
   return (
     <div
@@ -70,15 +70,18 @@ export const App = () => {
       </ContainerLeaflet>
 
       <button type="button" onClick={() => setOnOpenMap(!onOpenMap)}>
-        Open MODAL
+        Open map
       </button>
 
       {onOpenMap &&
         createPortal(
           <ModalWindow>
-            <h1>Hello world!!!</h1>
-            <button type="button" onClick={() => setOnOpenMap(!onOpenMap)}>
-              Close
+            <button
+              type="button"
+              onClick={() => setOnOpenMap(!onOpenMap)}
+              style={{ marginLeft: '90%' }}
+            >
+              Close map
             </button>
 
             <MapBox

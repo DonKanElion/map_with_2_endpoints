@@ -8,8 +8,8 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
 
 mapboxgl.accessToken =
-  'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg';
-// 'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg'; // Palienko token
+  // 'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg';
+  'pk.eyJ1IjoiZG9ua2FuZWxpb24iLCJhIjoiY2xyemI3NG9vMXVleTJrbXh4ZTJ2dTU1OSJ9.GhotX4S_qU8d3_5kwAs9gg'; // Palienko token
 
 // pk.eyJ1Ijoic2tvcmFzYXVydXMiLCJhIjoiY2s5dmRjbnZpMDVlZzNlcjN3MHowYzVrbSJ9.AcSdcVS034Hhl0RhBHoC2A
 
@@ -67,7 +67,8 @@ const MapBox = ({ coordinates, changeDistance }) => {
     map.on('load', function () {
       const { origin, destination } = coordinates;
 
-      if (Object.keys(coordinates).length !== 0) {
+      // if (Object.keys(coordinates).length !== 0) {
+      if (origin && destination) {
         directions.setOrigin(origin);
         directions.setDestination(destination);
         setMapOrigin(origin);
@@ -102,16 +103,21 @@ const MapBox = ({ coordinates, changeDistance }) => {
     directions.on('route', e => {
       // routes is an array of route objects as documented here:
       // Each route object has a distance property
-      setDistance(e.route[0].distance);
+
+      // setDistance(e.route[0].distance);
+      // changeDistance(distance);
+
+      // Chat GPT
+      if (e.route && e.route[0] && e.route[0].distance) {
+        const routeDistance = e.route[0].distance;
+        setDistance(routeDistance);
+        changeDistance(routeDistance);
+      }
     });
 
     // Clean up on unmount
     return () => map.remove();
   }, [coordinates, distance]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    changeDistance(distance);
-  }, [distance]);
 
   return (
     <div>

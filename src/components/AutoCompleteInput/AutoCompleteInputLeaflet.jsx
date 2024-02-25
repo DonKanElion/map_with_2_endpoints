@@ -18,8 +18,8 @@ export default function AutoCompleteInputLeaflet({
   };
 
   const handleInputChange = async query => {
-    const suggesions = await getAddress(query);
-    setSuggestions(suggesions);
+    const data = await getAddress(query);
+    setSuggestions(data);
   };
 
   const handleSuggestionClick = suggestion => {
@@ -56,6 +56,7 @@ export default function AutoCompleteInputLeaflet({
         <input
           className={css.input}
           type="text"
+          autoComplete="off"
           name={name}
           placeholder={placeholder}
           value={value}
